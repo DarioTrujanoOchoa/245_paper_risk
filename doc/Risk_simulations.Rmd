@@ -72,6 +72,7 @@ r_choices_HL <- function(r=.5,FUN=crra,
     }
     
   }
+  choose_A[1] <- 1 # we force the first decision to be safe
   return(as.data.frame(cbind(EuA=EuA,EuB=EuB,
                              choose_A=choose_A,
                              lower_bound_r=lower_bound_r)))
@@ -80,19 +81,30 @@ r_choices_HL <- function(r=.5,FUN=crra,
 r_elicited_HL <- function(choices){ # it uses the ouput from r_choices_HL
   last_A  <- choices$choose_A - dplyr::lead(choices$choose_A)
   first_B <- dplyr::lag(choices$choose_A) -choices$choose_A
-  lower_bound <- sum(last_A*choices$lower_bound_r,na.rm = T)
-  upper_bound <- sum(first_B*choices$lower_bound_r,na.rm = T)
+  lower_bound <- choices$lower_bound_r[which(last_A==1)]
+  upper_bound <- choices$lower_bound_r[which(first_B==1)]
   middle_r <- (upper_bound+lower_bound)/2
   return(middle_r)
 }
 # # to try the functions
-# choices <- r_choices_HL(r = 0.5,FUN = crra,option_A_payoffs, option_B_payoffs)
-# plot(choices$lower_bound_r)
-# r_elicited_HL(choices)
+choices <- r_choices_HL(r = -1.8,FUN = crra,option_A_payoffs, option_B_payoffs)
+plot(choices$lower_bound_r)
+r_elicited_HL(choices)
   
 # Generate r levels to create correlations
-r <- runif(-2,2)
+r_simulated <- runif(min = -2,max = 2,n = 100)
+r_HL <- rep(NA,length(r_simulated))
 
+for (r in r_simulated) {
+  decision_index <- which(r_simulated==r)
+  choices_r <- r_choices_HL(r = r,FUN = crra,
+                                option_A_payoffs = option_A_payoffs,
+                                option_B_payoffs = option_B_payoffs)
+  r_HL[decision_index] <- r_elicited_HL(choices_r)
+}
+
+plot(r_simulated,r_HL)
+cor.test(r_simulated,r_HL,na.action=na.omit)
 
 ```
 
