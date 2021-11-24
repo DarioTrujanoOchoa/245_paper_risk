@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Ignacio gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. 
 We are going to simulate a population distribution of r from a population and see what are the correlations expected.
-This correlations depend on the distribution. Take for example HL, where the rparamater is estimated in intervals; 
+This correlations depend on the distribution. Take for example HL, where the r paramater is estimated in intervals; 
 in the interior of one of the intervals, it is clear that the correlation of r levels will be zero. 
 
 we can explore the effects of considering a uniform distribution and see how the measures work, and also try to develop a more theoritically based 
@@ -28,6 +28,37 @@ It is for future discussion the tradeoff between the low correlation given no-th
 Other measures might be different given other biases and this is something we should try to replicate.
 There are some papers that have run simulations in order to understand the effect of the measures and how easy or complicated it is to elicit the r level in the population.
 
+### Holt and Laury
+
+```{r}
+r <- runif(-.2,1)
+
+option_A_payoffs <- c(40,32) # starting with the largest
+option_B_payoffs <- c(77,2) # starting with the largest
+
+crra <- function(eta=0.5,x=1){
+  if(eta==1){log(x)}
+  else{ x^(1-eta)/(1-eta)}
+  }
+
+r_elicited_HL <- function(r,FUN=crra, option_A_payoffs, option_B_payoffs){
+  prob_high_payoff <- seq(0.1,1,by=0.1)
+  list_length <- length(prob_high_payoff)
+  EuA <- rep(NA,list_length)
+  EuB <- rep(NA,list_length)
+  choose_A <- rep(NA,list_length)
+  for (pH in prob_high_payoff) {
+    decision_index <- which(prob_high_payoff==pH)
+    EuA[decision_index] <- c(pH,1-pH)%*%FUN(r,option_A_payoffs)
+    EuB[decision_index] <- c(pH,1-pH)%*%FUN(r,option_B_payoffs)
+    choose_A[decision_index] <- EuA[decision_index]>=EuB[decision_index]
+  }
+  return(cbind(EuA=EuA,EuB=EuB,choose_A=choose_A))
+}
+
+r_elicited_HL(0.5,FUN = crra,option_A_payoffs, option_B_payoffs)
+  
+```
 
 
 
