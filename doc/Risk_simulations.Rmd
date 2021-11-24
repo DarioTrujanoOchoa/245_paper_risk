@@ -31,33 +31,69 @@ There are some papers that have run simulations in order to understand the effec
 ### Holt and Laury
 
 ```{r}
-r <- runif(-.2,1)
-
+# HL ----
+## 2019
 option_A_payoffs <- c(40,32) # starting with the largest
 option_B_payoffs <- c(77,2) # starting with the largest
+## 2002
+option_A_payoffs <- c(2,1.6) # starting with the largest
+option_B_payoffs <- c(3.85,.1) # starting with the largest
 
 crra <- function(eta=0.5,x=1){
   if(eta==1){log(x)}
   else{ x^(1-eta)/(1-eta)}
-  }
+}
 
-r_elicited_HL <- function(r,FUN=crra, option_A_payoffs, option_B_payoffs){
+r_choices_HL <- function(r=.5,FUN=crra, 
+                          option_A_payoffs=c(2,1.6), 
+                          option_B_payoffs=c(3.85,.1)){
   prob_high_payoff <- seq(0.1,1,by=0.1)
   list_length <- length(prob_high_payoff)
+  # Objects to be filled for return
   EuA <- rep(NA,list_length)
   EuB <- rep(NA,list_length)
   choose_A <- rep(NA,list_length)
+  lower_bound_r <- rep(NA,list_length)
+  # Risk analysis of the list (for each risk level r)
   for (pH in prob_high_payoff) {
     decision_index <- which(prob_high_payoff==pH)
     EuA[decision_index] <- c(pH,1-pH)%*%FUN(r,option_A_payoffs)
     EuB[decision_index] <- c(pH,1-pH)%*%FUN(r,option_B_payoffs)
     choose_A[decision_index] <- EuA[decision_index]>=EuB[decision_index]
+    if(decision_index<list_length){
+      # solve to find the r that make indifferent both lotteries
+      lower_bound_r[[decision_index]] <- 
+        nleqslv::nleqslv(.01,
+                         fn = function(r){
+                           c(pH,1-pH)%*%crra(r,option_A_payoffs)-
+                             c(pH,1-pH)%*%crra(r,option_B_payoffs)})$x
+    }else{# In the last option, B is dominated
+      lower_bound_r[[decision_index]] <- NA
+    }
+    
   }
-  return(cbind(EuA=EuA,EuB=EuB,choose_A=choose_A))
+  return(as.data.frame(cbind(EuA=EuA,EuB=EuB,
+                             choose_A=choose_A,
+                             lower_bound_r=lower_bound_r)))
 }
 
-r_elicited_HL(0.5,FUN = crra,option_A_payoffs, option_B_payoffs)
+r_elicited_HL <- function(choices){ # it uses the ouput from r_choices_HL
+  last_A  <- choices$choose_A - dplyr::lead(choices$choose_A)
+  first_B <- dplyr::lag(choices$choose_A) -choices$choose_A
+  lower_bound <- sum(last_A*choices$lower_bound_r,na.rm = T)
+  upper_bound <- sum(first_B*choices$lower_bound_r,na.rm = T)
+  middle_r <- (upper_bound+lower_bound)/2
+  return(middle_r)
+}
+# # to try the functions
+# choices <- r_choices_HL(r = 0.5,FUN = crra,option_A_payoffs, option_B_payoffs)
+# plot(choices$lower_bound_r)
+# r_elicited_HL(choices)
   
+# Generate r levels to create correlations
+r <- runif(-2,2)
+
+
 ```
 
 
