@@ -88,23 +88,52 @@ r_elicited_HL <- function(choices){ # it uses the ouput from r_choices_HL
 }
 # # to try the functions
 choices <- r_choices_HL(r = -1.8,FUN = crra,option_A_payoffs, option_B_payoffs)
+choices
 plot(choices$lower_bound_r)
+abline(a=0,b=1)
 r_elicited_HL(choices)
   
-# Generate r levels to create correlations
-r_simulated <- runif(min = -2,max = 2,n = 100)
+# Generate r levels to create correlations ----
+r_simulated <- runif(min = -2,max = 2,n = 1000)
+r_simulated <- rnorm(mean = 0.42,sd = 0.49,n = 100)
+
+## Simulations ----
+# for real r
 r_HL <- rep(NA,length(r_simulated))
+# for random utility deviations
+r_HL_1 <- rep(NA,length(r_simulated))
+r_HL_2 <- rep(NA,length(r_simulated))
+# noise
+sd_epsilon  <- 0.2
 
 for (r in r_simulated) {
   decision_index <- which(r_simulated==r)
   choices_r <- r_choices_HL(r = r,FUN = crra,
                                 option_A_payoffs = option_A_payoffs,
                                 option_B_payoffs = option_B_payoffs)
+  # random deviations from the real r, two to take the correlations between repeated measures
+  r_1 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+  choices_r_1  <- r_choices_HL(r = r_1,FUN = crra,
+                                option_A_payoffs = option_A_payoffs,
+                                option_B_payoffs = option_B_payoffs)
+  r_2 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+  choices_r_2  <- r_choices_HL(r = r_2,FUN = crra,
+                                option_A_payoffs = option_A_payoffs,
+                                option_B_payoffs = option_B_payoffs)
+  
   r_HL[decision_index] <- r_elicited_HL(choices_r)
+  r_HL_1[decision_index] <- r_elicited_HL(choices_r_1)
+  r_HL_2[decision_index] <- r_elicited_HL(choices_r_2)
 }
 
+# relation with the real 
 plot(r_simulated,r_HL)
 cor.test(r_simulated,r_HL,na.action=na.omit)
+
+# relation with the repeated mesure
+plot(r_HL_1,r_HL_2)
+cor.test(r_HL_1,r_HL_2,na.action=na.omit)
+
 
 ```
 
