@@ -1,6 +1,6 @@
 # Generate r levels to create correlations ----
-r_simulated <- runif(min = -2,max = 2,n = 1000)
-r_simulated <- rnorm(mean = 0.42,sd = 0.49,n = 100)# noise
+#r_simulated <- runif(min = -2,max = 2,n = 1000)
+r_simulated <- rnorm(mean = 0.42,sd = 0.49,n = 1000)# noise
 sd_epsilon  <- 0.2
 
 # HL ----
