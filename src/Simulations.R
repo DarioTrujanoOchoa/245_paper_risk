@@ -97,10 +97,12 @@ for (r in r_simulated) {
 
 # relation with the real 
 plot(r_simulated,r_HL)
+abline(a=0, b = 1)
 cor.test(r_simulated,r_HL,na.action=na.omit)
 
 # relation with the repeated mesure
-plot(r_HL_1,r_HL_2)
+plot(r_HL_1,r_HL_2,type = "p")
+abline(a=0, b = 1)
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
 
 # EG ----
@@ -114,6 +116,7 @@ n_rows_EG <- 5
 r_choices_EG <- function(r=.5,FUN=crra, 
                          safe_payoffs = c(4,4), 
                          event_B_down_jump = 1,
+                         event_differential_proportion = c(-1,2),
                          n_rows_EG=5){
   prob_high_payoff <- rep(0.5,n_rows_EG)
   list_length <- length(prob_high_payoff)
@@ -153,9 +156,14 @@ r_choices_EG()
 
 r_elicited_EG <- function(choices){ # it uses the ouput from r_choices_EG
   row_chosen  <- which(choices$choose_row==1)
-  lower_bound <- choices$lower_bound_r[row_chosen]
-  upper_bound <- choices$lower_bound_r[row_chosen+1]
-  middle_r <- (upper_bound+lower_bound)/2
+  if(row_chosen!=1){
+    lower_bound <- choices$lower_bound_r[row_chosen]
+    upper_bound <- choices$lower_bound_r[row_chosen-1]
+    middle_r <- (upper_bound+lower_bound)/2
+  }else{
+    middle_r <- lower_bound
+    # we can select the lower bound, this is too conservative and will lead to underestimation.
+  }
   return(middle_r)
 }
 
@@ -193,17 +201,21 @@ for (r in r_simulated) {
 
 # relation with the real 
 plot(r_simulated,r_EG)
+abline(a=0, b = 1)
 cor.test(r_simulated,r_EG,na.action=na.omit)
 
 # relation with the repeated measure
 plot(r_EG_1,r_EG_2)
+abline(a=0, b = 1)
 cor.test(r_EG_1,r_EG_2,na.action=na.omit)
 
 # corr between tasks ----
 # relation with the real 
 plot(r_HL,r_EG)
+abline(a=0, b = 1)
 cor.test(r_HL,r_EG,na.action=na.omit)
 
 # relation with the repeated measure
 plot(r_HL_1,r_EG_2)
+abline(a=0, b = 1)
 cor.test(r_HL_1,r_EG_2,na.action=na.omit)
