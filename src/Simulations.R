@@ -56,11 +56,20 @@ r_elicited_HL <- function(choices){ # it uses the ouput from r_choices_HL
   first_B <- dplyr::lag(choices$choose_A) -choices$choose_A
   lower_bound <- choices$lower_bound_r[which(last_A==1)]
   upper_bound <- choices$lower_bound_r[which(first_B==1)]
-  middle_r <- (upper_bound+lower_bound)/2
+  if(which(last_A==1)<(length(choices$choose_A)-1)){
+    # the last option is always NA: no r can rationalize the last option to be B
+    # if choosing the penultimate option, then the function returns the lower bound
+    # this will create a censored data when r > the indiference point
+    middle_r <- (upper_bound+lower_bound)/2
+  }else{
+    middle_r <- lower_bound
+    # consider that last lower bound, this will create censored data
+  }
   return(middle_r)
 }
 
-r_elicited_HL(r_choices_HL())
+r_choices_HL(1.4)
+r_elicited_HL(r_choices_HL(r = 1.4))
 
 # # to try the functions
 choices <- r_choices_HL(r = -1.8,FUN = crra,option_A_payoffs, option_B_payoffs)
@@ -101,7 +110,7 @@ abline(a=0, b = 1)
 cor.test(r_simulated,r_HL,na.action=na.omit)
 
 # relation with the repeated mesure
-plot(r_HL_1,r_HL_2,type = "p")
+plot(r_HL_1,r_HL_2)
 abline(a=0, b = 1)
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
 
@@ -216,6 +225,7 @@ abline(a=0, b = 1)
 cor.test(r_HL,r_EG,na.action=na.omit)
 
 # relation with the repeated measure
-plot(r_HL_1,r_EG_2)
+plot(r_HL_1,r_EG_1)
 abline(a=0, b = 1)
 cor.test(r_HL_1,r_EG_2,na.action=na.omit)
+
