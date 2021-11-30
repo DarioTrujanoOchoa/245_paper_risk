@@ -66,7 +66,6 @@ r_elicited_HL(r_choices_HL())
 choices <- r_choices_HL(r = -1.8,FUN = crra,option_A_payoffs, option_B_payoffs)
 choices
 plot(choices$lower_bound_r)
-abline(a=0,b=1)
 r_elicited_HL(choices)
 
 ## Simulations ----
@@ -196,7 +195,7 @@ for (r in r_simulated) {
 plot(r_simulated,r_EG)
 cor.test(r_simulated,r_EG,na.action=na.omit)
 
-# relation with the repeated mesure
+# relation with the repeated measure
 plot(r_EG_1,r_EG_2)
 cor.test(r_EG_1,r_EG_2,na.action=na.omit)
 
@@ -205,6 +204,6 @@ cor.test(r_EG_1,r_EG_2,na.action=na.omit)
 plot(r_HL,r_EG)
 cor.test(r_HL,r_EG,na.action=na.omit)
 
-# relation with the repeated mesure
+# relation with the repeated measure
 plot(r_HL_1,r_EG_2)
 cor.test(r_HL_1,r_EG_2,na.action=na.omit)
