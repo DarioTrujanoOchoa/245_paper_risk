@@ -104,7 +104,11 @@ for (r in r_simulated) {
   r_HL_2[decision_index] <- r_elicited_HL(choices_r_2)
 }
 
-# relation with the real 
+## plots ----
+pdf(file="results/corr_HL.pdf",
+    width=8, height=4)
+par(mfrow=c(1,2))
+# relation with the real
 plot(r_simulated,r_HL)
 abline(a=0, b = 1)
 cor.test(r_simulated,r_HL,na.action=na.omit)
@@ -113,6 +117,8 @@ cor.test(r_simulated,r_HL,na.action=na.omit)
 plot(r_HL_1,r_HL_2)
 abline(a=0, b = 1)
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
+
+dev.off()
 
 # EG ----
 ## Payoffs
@@ -208,6 +214,10 @@ for (r in r_simulated) {
   r_EG_2[decision_index] <- r_elicited_EG(choices_r_2)
 }
 
+## plots ----
+pdf(file="results/corr_EG.pdf",
+    width=8, height=4)
+par(mfrow=c(1,2))
 # relation with the real 
 plot(r_simulated,r_EG)
 abline(a=0, b = 1)
@@ -218,7 +228,13 @@ plot(r_EG_1,r_EG_2)
 abline(a=0, b = 1)
 cor.test(r_EG_1,r_EG_2,na.action=na.omit)
 
-# corr between tasks ----
+dev.off()
+
+# Corr between tasks ----
+
+pdf(file="results/corr_EG_HL.pdf",
+    width=8, height=4)
+par(mfrow=c(1,2))
 # relation with the real 
 plot(r_HL,r_EG)
 abline(a=0, b = 1)
@@ -229,3 +245,4 @@ plot(r_HL_1,r_EG_1)
 abline(a=0, b = 1)
 cor.test(r_HL_1,r_EG_2,na.action=na.omit)
 
+dev.off()
