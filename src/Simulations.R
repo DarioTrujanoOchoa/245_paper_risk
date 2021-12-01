@@ -50,14 +50,24 @@ pdf(file="results/corr_HL.pdf",
     width=8, height=4)
 par(mfrow=c(1,2))
 # relation with the real
-plot(r_simulated,r_HL)
-abline(a=0, b = 1)
-cor.test(r_simulated,r_HL,na.action=na.omit)$estimate
+plot(r_simulated,r_HL,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between real r and elicited r using HL",
+     xlab="Simulated r",ylab="Elicited r with HL")
+abline(a=0, b = 1,col="blue")
+cor.test(r_simulated,r_HL,na.action=na.omit)
+text(x = 1,y=-1,paste("Correlation=", 
+                      round(cor.test(r_simulated,r_HL,na.action=na.omit)$estimate,4)))
 
 # relation with the repeated mesure
-plot(r_HL_1,r_HL_2)
-abline(a=0, b = 1)
+plot(r_HL_1,r_HL_2,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between two measures of r using HL",
+     xlab="Elicited r with measurement error 1",
+     ylab="Elicited r with measurement error 2")
+abline(a=0, b = 1,col="blue")
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
+text(x = 1,y=-1,paste("Correlation=", 
+                      round(cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate,4)))
+
 
 dev.off()
 
