@@ -49,8 +49,11 @@ Graph:
 
 ## References:
 Pedroni, Andreas, et al. "The risk elicitation puzzle." Nature Human Behaviour 1.11 (2017): 803-809.
+
 Crosetto, Paolo, and Antonio Filippin. "A theoretical and experimental appraisal of four risk elicitation methods." Experimental Economics 19.3 (2016): 613-641.
+
 Eckel, Catherine C., and Philip J. Grossman. "Sex differences and statistical stereotyping in attitudes toward financial risk." Evolution and human behavior 23.4 (2002): 281-295.
+
 Holt, Charles A., and Susan K. Laury. "Risk aversion and incentive effects." American economic review 92.5 (2002): 1644-1655.
 
 ## Appendix:
