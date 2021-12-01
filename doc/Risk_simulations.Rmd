@@ -12,39 +12,51 @@ knitr::opts_chunk$set(echo = TRUE)
 We are working on a project with professor Gary Charness. The project explores how experience/learning could change people's risk attitude to resolve the "risk aversion puzzle"—a particularly vexing occurrence in risk literature (Pedroni et al. (2017)). This puzzle stems from numerous investigations showing large inconsistencies in risk preferences when they were elicited using different or even similar methods. This puzzle raises many crucial questions in economics, and the main one is what is the origin of this inconsistency.  Ignacio gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. This gave us the inspiration for our final project in the 245M course. We are working on this project together, so we decided to use the Github platform to develop more experience using this tool in a group research environment.
 
 ## The project:
- We will simulate a population distribution of r and compare these risk parameters $(r)$ with the EG (Eckel and Grossman(2002)) and HL(Holy and Laury(2002)) risk elicitation methods. We explore the effects by assuming a normal distribution of $(r)$ using a mean and SD supported from previous experiments(Crosetto and Antonio(2016)). The main idea we want the simulation to be supported by some evidence from the field.  
-The correlations between the real $(r)$ and the estimated ones depend on the distribution. Take, for example, HL, where the r parameter is estimated in intervals; in the interior of one of the intervals, it is clear that the correlation between the real $(r)$ and the HL $(r_{HL})$ one will be lower by structure. Our main goal is to calculate the best correlation we can get in an ideal environment when there is no other noise in that data. In this "ideal environment" we can calculate the intrinsic cap in correlation, which is excited by the methods' structure. The second goal is to compare how some noise in players' decisions could influence the correlation between risk elicitation tasks. For example, players make an error in the risk elicitation task that isn't consistent with their risk attitude or do not have a constant risk attitude. We will assume that players' risk attitude is constant in this project, which can be another argument for the inconsistency in the risk elicitation puzzle, but players may make some errors $(\epsilon)$ in their decisions and deviate from their constant risk attitude.  
+ We will simulate a population distribution of r and compare these risk parameters $(r_{simulated})$ with the EG (Eckel and Grossman(2002)) and HL(Holy and Laury(2002)) risk elicitation methods. We explore the effects by assuming a normal distribution of $(r_{simulated})$ using a mean and SD supported from previous experiments(Crosetto and Antonio(2016)). The main idea we want the simulation to be supported by some evidence from the field.  
+The correlations between the real $(r_{simulated})$ and the estimated ones depend on the distribution. Take, for example, HL, where the r parameter is estimated in intervals; in the interior of one of the intervals, it is clear that the correlation between the real $(r_{simulated})$ and the HL $(r_{HL})$ one will be lower by structure. Our main goal is to calculate the best correlation we can get in an ideal environment when there is no other noise in that data. In this "ideal environment" we can calculate the intrinsic cap in correlation, which is excited by the methods' structure. The second goal is to compare how some noise in players' decisions could influence the correlation between risk elicitation tasks. For example, players make an error in the risk elicitation task that isn't consistent with their risk attitude or do not have a constant risk attitude. We will assume that players' risk attitude is constant in this project, which can be another argument for the inconsistency in the risk elicitation puzzle, but players may make some errors $(\epsilon)$ in their decisions and deviate from their constant risk attitude.  
 We will analyze our data in three different sections; each will deal with a different question. The first section will focus on the correlations between the HL risk elicitation method, the second one will be EG, and the last will explore the correlation between the two tasks.
 
 ##  Section 1 HL:
-1)	The first part will compare the actual risk parameter r_0 with the one elicited by the HL risk elicitation method $(r_{HL})$. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the " intrinsic cap in the correlation " in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude $(r)$.
+1)	The first part will compare the actual risk parameter $(r_{simulated})$ with the one elicited by the HL risk elicitation method $(r_{HL})$. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the " intrinsic cap in the correlation " in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude $(r)$.
 
-Graph:
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_HL.pdf} 
+\end{center}
+
 
 Correlation:
 
 
-2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial $(r_{HL_1},r_{HL_2})$. We will compare it to the change in the correlation between HL and the real risk attitude $(r)$ without error.
+2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial $(r_{HL_1},r_{HL_2})$. We will compare it to the change in the correlation between HL and the real risk attitude $(r_{simulated})$  without error.
 
-Graph:
 
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_sd_epsilon_HL.pdf} 
+\end{center}
 
 ## Section 2 EG:
-1)	The first part will compare the actual risk parameter r_0 with the one elicited by the EG risk elicitation method $r_{EG}$. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the " intrinsic cap in the correlation " in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude $(r)$.
+1)	The first part will compare the actual risk parameter $(r_{simulated})$ with the one elicited by the EG risk elicitation method $r_{EG}$. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the " intrinsic cap in the correlation " in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude $(r)$.
 
-Graph:
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_EG.pdf} 
+\end{center}
+
 
 Correlation:
 
 
-2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial $(r_{EG_1},r_{EG_2})$. We will compare it to the change in the correlation between HL and the real risk attitude $(r)$ without error.
+2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial $(r_{EG_1},r_{EG_2})$. We will compare it to the change in the correlation between HL and the real risk attitude $(r_{simulated})$  without error.
 
-Graph:
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_sd_epsilon_EG.pdf} 
+\end{center}
 
 ## Section 3 the correlation between the two tasks:
 In this part, we will compare the correlation between the two tasks. The main idea is to explore how the correlation between tasks will change while increasing the "errors" that players can make in any given trial.
 
-Graph:
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_EG_HL.pdf} 
+\end{center}
 
 
 ## References:
@@ -57,11 +69,15 @@ Eckel, Catherine C., and Philip J. Grossman. "Sex differences and statistical st
 Holt, Charles A., and Susan K. Laury. "Risk aversion and incentive effects." American economic review 92.5 (2002): 1644-1655.
 
 ## Appendix:
-How did we clean/organize the data? 
+How did we clean/organize the data?
+
 In this project, we decided to explore the risk elicitation puzzle by running some simulations on different risk elicitation methods and calculating the correlation of those elicitations in various hypothetical scenarios. Those simulations created the data that we used. With those simulations, we run some data analysis to explore broader questions that we have in mind related to our project with professor Gary Charness. 
 What did we learn from this project?
+
 1.	Working on a joint project by using Github.
+
 2.	 Running some simulation in r.
+
 3.	Analyzing the data from the simulation and using this result to learn more about the risk elicitation puzzle.
 
 ```{r}
