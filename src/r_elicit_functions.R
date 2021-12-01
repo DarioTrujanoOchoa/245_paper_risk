@@ -112,8 +112,8 @@ r_choices_EG()
 
 r_elicited_EG <- function(choices){ # it uses the ouput from r_choices_EG
   row_chosen  <- which(choices$choose_row==1)
+  lower_bound <- choices$lower_bound_r[row_chosen]
   if(row_chosen!=1){
-    lower_bound <- choices$lower_bound_r[row_chosen]
     upper_bound <- choices$lower_bound_r[row_chosen-1]
     middle_r <- (upper_bound+lower_bound)/2
   }else{
