@@ -8,27 +8,33 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## Overview:
+We are working on a project with professor Gary Charness. The project explores how experience/learning could change people's risk attitude to resolve the "risk aversion puzzle"—a particularly vexing occurrence in risk literature (Pedroni et al. (2017)). This puzzle stems from numerous investigations showing large inconsistencies in risk preferences when they were elicited using different or even similar methods. This puzzle raises many crucial questions in economics, and the main one is what is the origin of this inconsistency.  Ignacio gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. This gave us the inspiration for our final project in the 245M course. We are working on this project together, so we decided to use the Github platform to develop more experience using this tool in a group research environment. 
 
-## Simulations
+## The project:
+We will simulate a population distribution of r and compare these risk parameters(r_0) with the EG (Eckel and Grossman(2002)) and HL(Holy and Laury(2002)) risk elicitation methods. We explore the effects by assuming a normal distribution (of r_o) using a mean and SD supported from previous experiments(Crosetto and Antonio(2016)). The main idea we want the simulation to be supported by some evidence from the field.  
+The correlations between the real r (r_0) and the estimated ones depend on the distribution. Take, for example, HL, where the r parameter is estimated in intervals; in the interior of one of the intervals, it is clear that the correlation between the real r (r_0) and the HL (r_HL) one will lower by structure. Our main goal is to calculate the best correlation we can get in an ideal environment when there is no other noise in that data. In this "ideal environment" we can calculate the intrinsic cap in correlation, which is excited by the methods' structure. The second goal is to compare how some noise in players' decisions (making some errors) could influence the correlation between risk elicitation tasks. For example, players make an error in the risk elicitation task that isn't consistent with their risk attitude or do not have a constant risk attitude. We will assume that players' risk attitude is constant in this project, which can be another argument for the inconsistency in the risk elicitation puzzle, but players may make some errors (epsilon) in their decision and deviate from their constant risk attitude.  
+We will analyze our data in three different sections; each will deal with a different question. The first section will focus on the correlations between the HL risk elicitation method, the second one will be EG, and the last will explore the correlation between the two tasks.
 
-Ignacio gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. 
-We are going to simulate a population distribution of r from a population and see what are the correlations expected.
-This correlations depend on the distribution. Take for example HL, where the r paramater is estimated in intervals; 
-in the interior of one of the intervals, it is clear that the correlation of r levels will be zero. 
+## Section 1 HL:
+1)	The first part will compare the actual risk parameter r_0 with the one elicited by the HL risk elicitation method r_HL. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the "structural inconsistency" in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude (r_0). 
+Graph:
+Correlation:
 
-we can explore the effects of considering a uniform distribution and see how the measures work, and also try to develop a more theoritically based 
-argument for the limits observed in the correlation. Simulation will only serve as a graphical description of the general argument.
+2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial. We will compare it to the change in the correlation between HL and the real risk attitude (r_o) without error.
 
-We have to assume a distribution of r in the general population that is meaningful, 
-i.e. consider previous data and consider the mean and SD from the population (there most be differences according to different populations, but a higher SD should no create too much problem)
-once the mean from the population is estimated, we can consider what would be the effect of considering for example smaller intervals around the mean. 
-Some researcher might argue that this could create a biased estimation because of experimenters demands and reference points. 
-It is for future discussion the tradeoff between the low correlation given no-that-accurate measures and the biased caused by this measures.
+## Section 2 EG:
+1)	The first part will compare the actual risk parameter r_0 with the one elicited by the EG risk elicitation method r_EG. We will assume that agents' decisions on the task correspond with their risk attitude without making any error. This will allow us to calculate the "structural inconsistency" in a perfect world without any mistakes made by the players in their decision and the central assumption which players have a constant risk attitude (r_0). 
+Graph:
+Correlation:
 
-Other measures might be different given other biases and this is something we should try to replicate.
-There are some papers that have run simulations in order to understand the effect of the measures and how easy or complicated it is to elicit the r level in the population.
+2)	 The second part will deal with comparing the correlation between two different HL one-shot trails. The main idea is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial. We will compare it to the change in the correlation between HL and the real risk attitude (r_o) without error.
+Graph:
 
-### Holt and Laury
+## Section 3 the correlation between the two tasks:
+In this part, we will compare the correlation between the two tasks. The main idea is to explore how the correlation between tasks will change while increasing the "errors" that players can make in any given trial.
+Graph:
+
 
 ```{r}
 
