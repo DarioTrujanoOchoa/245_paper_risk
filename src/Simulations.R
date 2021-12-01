@@ -128,6 +128,7 @@ r_EG <- rep(NA,length(r_simulated))
 # for random utility deviations
 r_EG_1 <- rep(NA,length(r_simulated))
 r_EG_2 <- rep(NA,length(r_simulated))
+sd_epsilon  <- 0.2
 
 for (r in r_simulated) {
   decision_index <- which(r_simulated==r)
