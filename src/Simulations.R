@@ -45,14 +45,14 @@ for (r in r_simulated) {
   r_HL_2[decision_index] <- r_elicited_HL(choices_r_2)
 }
 
-## plots ----
+### plots ----
 pdf(file="results/corr_HL.pdf",
     width=8, height=4)
 par(mfrow=c(1,2))
 # relation with the real
 plot(r_simulated,r_HL)
 abline(a=0, b = 1)
-cor.test(r_simulated,r_HL,na.action=na.omit)
+cor.test(r_simulated,r_HL,na.action=na.omit)$estimate
 
 # relation with the repeated mesure
 plot(r_HL_1,r_HL_2)
@@ -60,6 +60,53 @@ abline(a=0, b = 1)
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
 
 dev.off()
+
+## Different sd of epsilons ----
+
+sds_epsilon <- seq(0,1.5,by=0.1)
+
+corr_real_estimated_error <- rep(NA,length(sds_epsilon))
+corr_error <- rep(NA,length(sds_epsilon))
+
+for(sd_epsilon in sds_epsilon){
+  sd_epsilon_index <- which(sds_epsilon==sd_epsilon)
+  # for real r
+  r_HL <- rep(NA,length(r_simulated))
+  # for random utility deviations
+  r_HL_1 <- rep(NA,length(r_simulated))
+  r_HL_2 <- rep(NA,length(r_simulated))
+  
+  for (r in r_simulated) {
+    decision_index <- which(r_simulated==r)
+    choices_r <- r_choices_HL(r = r,FUN = crra,
+                              option_A_payoffs = option_A_payoffs,
+                              option_B_payoffs = option_B_payoffs)
+    # random deviations from the real r, two to take the correlations between repeated measures
+    r_1 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+    choices_r_1  <- r_choices_HL(r = r_1,FUN = crra,
+                                 option_A_payoffs = option_A_payoffs,
+                                 option_B_payoffs = option_B_payoffs)
+    r_2 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+    choices_r_2  <- r_choices_HL(r = r_2,FUN = crra,
+                                 option_A_payoffs = option_A_payoffs,
+                                 option_B_payoffs = option_B_payoffs)
+    
+    r_HL[decision_index] <- r_elicited_HL(choices_r)
+    r_HL_1[decision_index] <- r_elicited_HL(choices_r_1)
+    r_HL_2[decision_index] <- r_elicited_HL(choices_r_2)
+  }
+  
+  corr_real_estimated_error[sd_epsilon_index] <- cor.test(r_simulated,r_HL_1,na.action=na.omit)$estimate
+  corr_error[sd_epsilon_index] <- cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate
+}
+
+corr_real_estimated_error
+corr_error
+
+plot(sds_epsilon,corr_error,ylim = c(0,1),type = "l",col="darkred",
+     main="Correlation as a function of the measurement error in HL")
+points(sds_epsilon,corr_real_estimated_error,type = "l",col="darkgreen")
+legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkgreen"),lty = 1)
 
 # EG ----
 ## Payoffs
