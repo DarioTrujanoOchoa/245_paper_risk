@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## Overview:
-We are working on a project with professor Gary Charness. The project explores how experience/learning could change people's risk attitude to resolve the "risk aversion puzzle"—a particularly vexing occurrence in risk literature (Pedroni et al. (2017)). This puzzle stems from numerous investigations showing large inconsistencies in risk preferences when they were elicited using different or even similar methods. This puzzle raises many crucial questions in economics, and the main one is what is the origin of this inconsistency.  Ignacio gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. This gave us the inspiration for our final project in the 245M course. We are working on this project together, so we decided to use the Github platform to develop more experience using this tool in a group research environment.
+We are working on a project with professor Gary Charness. The project explores how experience/learning could change people's risk attitude to resolve the "risk aversion puzzle"—a particularly vexing occurrence in risk literature (Pedroni et al. (2017)). This puzzle stems from numerous investigations showing large inconsistencies in risk preferences when they were elicited using different or even similar methods. This puzzle raises many crucial questions in economics, and the main one is what is the origin of this inconsistency.  Professor Ignacio Esponda  gave us the idea of checking if the measures used in the literature have an intrinsic cap in the correlation. This gave us the inspiration for our final project in the 245M course. We are working on this project together, so we decided to use the Github platform to develop more experience using this tool in a group research environment.
 
 ## The project:
  We will simulate a population distribution of r and compare these risk parameters $(r_{simulated})$ with the EG (Eckel and Grossman(2002)) and HL(Holy and Laury(2002)) risk elicitation methods. We explore the effects by assuming a normal distribution of $(r_{simulated})$ using a mean and SD supported from previous experiments(Crosetto and Antonio(2016)). The main idea we want the simulation to be supported by some evidence from the field.  
@@ -23,11 +23,9 @@ The left Graph compares the actual risk parameter$(r_{simulated})$ with the one 
 
 The right Graph shows the correlation between two different HL one-shot trails with a noisy error of r, allowing players to make some errors in their decisions. The noise will be normal with a mean of zero and SD of 0.2.
 \begin{center} 
-\includegraphics[width=6in]{../results/corr_HL.pdf} 
+\includegraphics[width=5in]{../results/corr_HL.pdf} 
 \end{center}
-Correlations:
-$$corr(r_{simulated},r_{HL})=0.98$$
-$$corr(r_{HL_1},r_{HL_2})=0.82$$
+
 The main idea of the last Graph is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial. We will compare it to the change in the correlation between HL with error and the real risk attitude  $(r_{simulated})$  without error.
 
 \begin{center} 
@@ -39,11 +37,9 @@ The left Graph compares the actual risk parameter$(r_{simulated})$ with the one 
 
 The right Graph shows the correlation between two different EG one-shot trails with a noisy error of r, allowing players to make some errors in their decisions. The noise will be normal with a mean of zero and SD of 0.2.
 \begin{center} 
-\includegraphics[width=6in]{../results/corr_EG.pdf} 
+\includegraphics[width=5in]{../results/corr_EG.pdf} 
 \end{center}
-Correlations:
-$$corr(r_{simulated},r_{EG})=0.87$$
-$$corr(r_{EG_1},r_{EG_2})=0.75$$
+
 The main idea of the last Graph is to explore how the correlation between identical tasks will change while increasing the "errors" that players can make in any given trial. We will compare it to the change in the correlation between EG and the real risk attitude  $(r_{simulated})$  without error.
 \begin{center} 
 \includegraphics[width=4in]{../results/corr_sd_epsilon_EG.pdf} 
@@ -53,21 +49,15 @@ The main idea of the last Graph is to explore how the correlation between identi
 In this part, we will compare the correlation between the two tasks with (left) and without (right)  a noisy error (a mean of zero and SD of 0.2.).
 
 \begin{center} 
-\includegraphics[width=6in]{../results/corr_EG_HL.pdf} 
+\includegraphics[width=5in]{../results/corr_EG_HL.pdf} 
 \end{center}
 
-\begin{center} 
-\includegraphics[width=6in]{../results/corr_sd_epsilon_EG_HL.pdf} 
-\end{center}
-
-Correlation:
-No error:
-$$corr(r_{EG},r_{HL})=0.87$$
-With error:
-$$corr(r_{EG1},r_{HL1})=$$
 The main idea of the last Graph is to explore how the correlation between tasks will change while increasing the "errors" that players can make in any given trial.
 
-
+\begin{center} 
+\includegraphics[width=4in]{../results/corr_sd_epsilon_EG_HL.pdf} 
+\end{center}
+\newpage
 ## References:
 Pedroni, Andreas, et al. "The risk elicitation puzzle." Nature Human Behaviour 1.11 (2017): 803-809.
 
