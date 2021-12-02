@@ -162,22 +162,41 @@ dev.off()
 
 # Simulations for different sd_epsilons ----
 
-## HL ----
 sds_epsilon <- seq(0,1.5,by=0.1)
 
+### HL
 corr_real_estimated_error <- rep(NA,length(sds_epsilon))
 corr_error <- rep(NA,length(sds_epsilon))
 
+### EG
+corr_real_estimated_error_EG <- rep(NA,length(sds_epsilon))
+corr_error_EG <- rep(NA,length(sds_epsilon))
+
+# Correlation between instruments
+corr_error_EG_HL_1 <- rep(NA,length(sds_epsilon))
+corr_error_EG_HL_2 <- rep(NA,length(sds_epsilon))
+
 for(sd_epsilon in sds_epsilon){
   sd_epsilon_index <- which(sds_epsilon==sd_epsilon)
+  
+  # HL
   # for real r
   r_HL <- rep(NA,length(r_simulated))
   # for random utility deviations
   r_HL_1 <- rep(NA,length(r_simulated))
   r_HL_2 <- rep(NA,length(r_simulated))
   
+  # EG 
+  # for real r
+  r_EG <- rep(NA,length(r_simulated))
+  # for random utility deviations
+  r_EG_1 <- rep(NA,length(r_simulated))
+  r_EG_2 <- rep(NA,length(r_simulated))
+  
   for (r in r_simulated) {
     decision_index <- which(r_simulated==r)
+    
+    # HL
     choices_r <- r_choices_HL(r = r,FUN = crra,
                               option_A_payoffs = option_A_payoffs,
                               option_B_payoffs = option_B_payoffs)
@@ -194,42 +213,8 @@ for(sd_epsilon in sds_epsilon){
     r_HL[decision_index] <- r_elicited_HL(choices_r)
     r_HL_1[decision_index] <- r_elicited_HL(choices_r_1)
     r_HL_2[decision_index] <- r_elicited_HL(choices_r_2)
-  }
-  
-  corr_real_estimated_error[sd_epsilon_index] <- cor.test(r_simulated,r_HL_1,na.action=na.omit)$estimate
-  corr_error[sd_epsilon_index] <- cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate
-}
-
-corr_real_estimated_error
-corr_error
-
-pdf(file="results/corr_sd_epsilon_HL.pdf",
-    width=6, height=4)
-par(mfrow=c(1,1))
-plot(sds_epsilon,corr_error,ylim = c(0,1),type = "l",col="darkred",
-     main="Correlation as a function of the measurement error in HL")
-points(sds_epsilon,corr_real_estimated_error,type = "l",col="darkgreen")
-legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkgreen"),lty = 1)
-
-dev.off()
-
-## EG ----
-
-sds_epsilon <- seq(0,1.5,by=0.1)
-
-corr_real_estimated_error_EG <- rep(NA,length(sds_epsilon))
-corr_error_EG <- rep(NA,length(sds_epsilon))
-
-for(sd_epsilon in sds_epsilon){
-  sd_epsilon_index <- which(sds_epsilon==sd_epsilon)
-  # for real r
-  r_EG <- rep(NA,length(r_simulated))
-  # for random utility deviations
-  r_EG_1 <- rep(NA,length(r_simulated))
-  r_EG_2 <- rep(NA,length(r_simulated))
-  
-  for (r in r_simulated) {
-    decision_index <- which(r_simulated==r)
+    
+    # EG
     choices_r <- r_choices_EG(r = r,FUN = crra, 
                               safe_payoffs = safe_payoffs, 
                               event_B_down_jump = event_B_down_jump,
@@ -249,26 +234,68 @@ for(sd_epsilon in sds_epsilon){
     r_EG[decision_index] <- r_elicited_EG(choices_r)
     r_EG_1[decision_index] <- r_elicited_EG(choices_r_1)
     r_EG_2[decision_index] <- r_elicited_EG(choices_r_2)
+    
   }
   
+  # HL
+  corr_real_estimated_error[sd_epsilon_index] <- cor.test(r_simulated,r_HL_1,na.action=na.omit)$estimate
+  corr_error[sd_epsilon_index] <- cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate
+  
+  # EG
   corr_real_estimated_error_EG[sd_epsilon_index] <- cor.test(r_simulated,r_EG_1,na.action=na.omit)$estimate
   corr_error_EG[sd_epsilon_index] <- cor.test(r_EG_1,r_EG_2,na.action=na.omit)$estimate
+  
+  # Correlation between instruments
+  corr_error_EG_HL_1[sd_epsilon_index] <- cor.test(r_EG_1,r_HL_1,na.action=na.omit)$estimate
+  corr_error_EG_HL_2[sd_epsilon_index] <- cor.test(r_EG_2,r_HL_2,na.action=na.omit)$estimate
+  
 }
 
+# HL
+corr_real_estimated_error
+corr_error
+
+pdf(file="results/corr_sd_epsilon_HL.pdf",
+    width=6, height=4)
+par(mfrow=c(1,1))
+
+plot(sds_epsilon,corr_error,ylim = c(0,1),type = "l",col="darkred",
+     main="Correlation as a function of the measurement error in HL",
+     xlab = expression(sigma[epsilon]),
+     ylab = "Correlation")
+points(sds_epsilon,corr_real_estimated_error,type = "l",col="darkgreen")
+legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkgreen"),lty = 1)
+
+dev.off()
+
+# EG 
 corr_real_estimated_error_EG
 corr_error_EG
-
 
 pdf(file="results/corr_sd_epsilon_EG.pdf",
     width=6, height=4)
 
 plot(sds_epsilon,corr_error_EG,ylim = c(0,1),type = "l",col="darkred",
-     main="Correlation as a function of the measurement error in EG")
+     main="Correlation as a function of the measurement error in EG",
+     xlab = expression(sigma[epsilon]),
+     ylab = "Correlation")
 points(sds_epsilon,corr_real_estimated_error_EG,type = "l",col="darkgreen")
 legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkgreen"),lty = 1)
 
 dev.off()
 
+# correlation between instruments
+corr_error_EG_HL_1
+pdf(file="results/corr_sd_epsilon_EG_HL.pdf",
+    width=6, height=4)
 
-## Corr EG and HL ----
+plot(sds_epsilon,corr_error_EG_HL_1,ylim = c(0,1),type = "l",col="darkred",
+     main="Correlation between HL and EG as a function of the measurement error",
+     xlab = expression(sigma[epsilon]),
+     ylab = "Correlation")
+points(sds_epsilon,corr_error_EG_HL_2,type = "l",col="darkgreen")
+legend(x = 1,y=1,legend = c("Simulation 1","Simulation 2"),col = c("darkred","darkgreen"),lty = 1)
+
+dev.off()
+
 
