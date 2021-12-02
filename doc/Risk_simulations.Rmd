@@ -56,6 +56,10 @@ In this part, we will compare the correlation between the two tasks with (left) 
 \includegraphics[width=6in]{../results/corr_EG_HL.pdf} 
 \end{center}
 
+\begin{center} 
+\includegraphics[width=6in]{../results/corr_sd_epsilon_EG_HL.pdf} 
+\end{center}
+
 Correlation:
 No error:
 $$corr(r_{EG},r_{HL})=0.87$$
