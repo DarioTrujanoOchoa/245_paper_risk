@@ -52,7 +52,7 @@ par(mfrow=c(1,2))
 # relation with the real
 plot(r_simulated,r_HL,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
      main = "Correlation between real r and elicited r using HL",
-     xlab="Simulated r",ylab="Elicited r with HL")
+     xlab="Simulated r",ylab="Elicited r")
 abline(a=0, b = 1,col="blue")
 cor.test(r_simulated,r_HL,na.action=na.omit)
 text(x = 1,y=-1,paste("Correlation=", 
@@ -68,11 +68,101 @@ cor.test(r_HL_1,r_HL_2,na.action=na.omit)
 text(x = 1,y=-1,paste("Correlation=", 
                       round(cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate,4)))
 
+dev.off()
+
+# EG ----
+## Payoffs
+## C&P 2015
+safe_payoffs <- c(4,4) # safest option
+event_B_down_jump <- 1
+event_differential_proportion <- c(-1,2)
+n_rows_EG <- 5
+
+
+## Simulations ----
+# for real r
+r_EG <- rep(NA,length(r_simulated))
+# for random utility deviations
+r_EG_1 <- rep(NA,length(r_simulated))
+r_EG_2 <- rep(NA,length(r_simulated))
+sd_epsilon  <- 0.2
+
+for (r in r_simulated) {
+  decision_index <- which(r_simulated==r)
+  choices_r <- r_choices_EG(r = r,FUN = crra, 
+                            safe_payoffs = safe_payoffs, 
+                            event_B_down_jump = event_B_down_jump,
+                            n_rows_EG=n_rows_EG)
+  # random deviations from the real r, two to take the correlations between repeated measures
+  r_1 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+  choices_r_1  <- r_choices_EG(r = r_1,FUN = crra,
+                               safe_payoffs = safe_payoffs, 
+                               event_B_down_jump = event_B_down_jump,
+                               n_rows_EG=n_rows_EG)
+  r_2 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
+  choices_r_2  <- r_choices_EG(r = r_2,FUN = crra,
+                               safe_payoffs = safe_payoffs, 
+                               event_B_down_jump = event_B_down_jump,
+                               n_rows_EG=n_rows_EG)
+  
+  r_EG[decision_index] <- r_elicited_EG(choices_r)
+  r_EG_1[decision_index] <- r_elicited_EG(choices_r_1)
+  r_EG_2[decision_index] <- r_elicited_EG(choices_r_2)
+}
+
+### plots ----
+pdf(file="results/corr_EG.pdf",
+    width=8, height=4)
+par(mfrow=c(1,2))
+# relation with the real 
+plot(r_simulated,r_EG,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between real r and elicited r using EG",
+     xlab="Simulated r",ylab="Elicited r")
+abline(a=0, b = 1,col="blue")
+cor.test(r_simulated,r_EG,na.action=na.omit)
+text(x = 1,y=.2,paste("Correlation=", 
+                      round(cor.test(r_simulated,r_EG,na.action=na.omit)$estimate,4)))
+
+# relation with the repeated measure
+plot(r_EG_1,r_EG_2,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between two measures of r using EG",
+     xlab="Elicited r with measurement error 1",
+     ylab="Elicited r with measurement error 2")
+abline(a=0, b = 1,col="blue")
+cor.test(r_EG_1,r_EG_2,na.action=na.omit)
+text(x = 1,y=.2,paste("Correlation=", 
+                      round(cor.test(r_EG_1,r_EG_2,na.action=na.omit)$estimate,4)))
 
 dev.off()
 
-## Different sd of epsilons ----
+# Corr between tasks plots ----
 
+pdf(file="results/corr_EG_HL.pdf",
+    width=8, height=4)
+par(mfrow=c(1,2))
+# relation with the real 
+plot(r_HL,r_EG,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between HL and EG without error",
+     ylab=expression('r'[EG]),xlab=expression('r'[HL]))
+abline(a=0, b = 1,col="blue")
+cor.test(r_HL,r_EG,na.action=na.omit)
+text(x = 1,y=.3,paste("Correlation=", 
+                      round(cor.test(r_HL,r_EG,na.action=na.omit)$estimate,4)))
+
+# relation with the repeated measure
+plot(r_HL_1,r_EG_1,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
+     main = "Correlation between HL and EG with error",
+     ylab=expression('r'[EG]),xlab=expression('r'[HL]))
+abline(a=0, b = 1,col="blue")
+cor.test(r_HL_1,r_EG_2,na.action=na.omit)
+text(x = -1,y=1.5,paste("Correlation=", 
+                      round(cor.test(r_HL_1,r_EG_2,na.action=na.omit)$estimate,4)))
+
+dev.off()
+
+# Simulations for different sd_epsilons ----
+
+## HL ----
 sds_epsilon <- seq(0,1.5,by=0.1)
 
 corr_real_estimated_error <- rep(NA,length(sds_epsilon))
@@ -123,63 +213,7 @@ legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkg
 
 dev.off()
 
-# EG ----
-## Payoffs
-## C&P 2015
-safe_payoffs <- c(4,4) # safest option
-event_B_down_jump <- 1
-event_differential_proportion <- c(-1,2)
-n_rows_EG <- 5
-
-
-## Simulations ----
-# for real r
-r_EG <- rep(NA,length(r_simulated))
-# for random utility deviations
-r_EG_1 <- rep(NA,length(r_simulated))
-r_EG_2 <- rep(NA,length(r_simulated))
-sd_epsilon  <- 0.2
-
-for (r in r_simulated) {
-  decision_index <- which(r_simulated==r)
-  choices_r <- r_choices_EG(r = r,FUN = crra, 
-                            safe_payoffs = safe_payoffs, 
-                            event_B_down_jump = event_B_down_jump,
-                            n_rows_EG=n_rows_EG)
-  # random deviations from the real r, two to take the correlations between repeated measures
-  r_1 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
-  choices_r_1  <- r_choices_EG(r = r_1,FUN = crra,
-                               safe_payoffs = safe_payoffs, 
-                               event_B_down_jump = event_B_down_jump,
-                               n_rows_EG=n_rows_EG)
-  r_2 <- r + rnorm(mean = 0,sd = sd_epsilon,n = 1)
-  choices_r_2  <- r_choices_EG(r = r_2,FUN = crra,
-                               safe_payoffs = safe_payoffs, 
-                               event_B_down_jump = event_B_down_jump,
-                               n_rows_EG=n_rows_EG)
-  
-  r_EG[decision_index] <- r_elicited_EG(choices_r)
-  r_EG_1[decision_index] <- r_elicited_EG(choices_r_1)
-  r_EG_2[decision_index] <- r_elicited_EG(choices_r_2)
-}
-
-### plots ----
-pdf(file="results/corr_EG.pdf",
-    width=8, height=4)
-par(mfrow=c(1,2))
-# relation with the real 
-plot(r_simulated,r_EG)
-abline(a=0, b = 1)
-cor.test(r_simulated,r_EG,na.action=na.omit)
-
-# relation with the repeated measure
-plot(r_EG_1,r_EG_2)
-abline(a=0, b = 1)
-cor.test(r_EG_1,r_EG_2,na.action=na.omit)
-
-dev.off()
-
-## Different sd of epsilons ----
+## EG ----
 
 sds_epsilon <- seq(0,1.5,by=0.1)
 
@@ -235,20 +269,6 @@ legend(x = 1,y=1,legend = c("error-error","real-error"),col = c("darkred","darkg
 
 dev.off()
 
-# Corr between tasks ----
 
-pdf(file="results/corr_EG_HL.pdf",
-    width=8, height=4)
-par(mfrow=c(1,2))
-# relation with the real 
-plot(r_HL,r_EG)
-abline(a=0, b = 1)
-cor.test(r_HL,r_EG,na.action=na.omit)
-
-# relation with the repeated measure
-plot(r_HL_1,r_EG_1)
-abline(a=0, b = 1)
-cor.test(r_HL_1,r_EG_2,na.action=na.omit)
-
-dev.off()
+## Corr EG and HL ----
 
