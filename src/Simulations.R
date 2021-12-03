@@ -51,21 +51,21 @@ pdf(file="results/corr_HL.pdf",
 par(mfrow=c(1,2))
 # relation with the real
 plot(r_simulated,r_HL,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between real r and elicited r using HL",
+     main = "Real r and elicited r using HL",
      xlab="Simulated r",ylab="Elicited r")
 abline(a=0, b = 1,col="blue")
 cor.test(r_simulated,r_HL,na.action=na.omit)
-text(x = 1,y=-1,paste("Correlation=", 
+text(x = 1,y=-1,paste("Corr=", 
                       round(cor.test(r_simulated,r_HL,na.action=na.omit)$estimate,4)))
 
 # relation with the repeated mesure
 plot(r_HL_1,r_HL_2,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between two measures of r using HL",
+     main = "Two measures of r using HL",
      xlab="Elicited r with measurement error 1",
      ylab="Elicited r with measurement error 2")
 abline(a=0, b = 1,col="blue")
 cor.test(r_HL_1,r_HL_2,na.action=na.omit)
-text(x = 1,y=-1,paste("Correlation=", 
+text(x = 1,y=-1,paste("Corr=", 
                       round(cor.test(r_HL_1,r_HL_2,na.action=na.omit)$estimate,4)))
 
 dev.off()
@@ -116,21 +116,21 @@ pdf(file="results/corr_EG.pdf",
 par(mfrow=c(1,2))
 # relation with the real 
 plot(r_simulated,r_EG,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between real r and elicited r using EG",
+     main = "Real r and elicited r using EG",
      xlab="Simulated r",ylab="Elicited r")
 abline(a=0, b = 1,col="blue")
 cor.test(r_simulated,r_EG,na.action=na.omit)
-text(x = 1,y=.2,paste("Correlation=", 
+text(x = 1,y=.2,paste("Corr=", 
                       round(cor.test(r_simulated,r_EG,na.action=na.omit)$estimate,4)))
 
 # relation with the repeated measure
 plot(r_EG_1,r_EG_2,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between two measures of r using EG",
+     main = "Between two measures of r using EG",
      xlab="Elicited r with measurement error 1",
      ylab="Elicited r with measurement error 2")
 abline(a=0, b = 1,col="blue")
 cor.test(r_EG_1,r_EG_2,na.action=na.omit)
-text(x = 1,y=.2,paste("Correlation=", 
+text(x = 1,y=.2,paste("Corr=", 
                       round(cor.test(r_EG_1,r_EG_2,na.action=na.omit)$estimate,4)))
 
 dev.off()
@@ -142,20 +142,20 @@ pdf(file="results/corr_EG_HL.pdf",
 par(mfrow=c(1,2))
 # relation with the real 
 plot(r_HL,r_EG,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between HL and EG without error",
+     main = "HL and EG without error",
      ylab=expression('r'[EG]),xlab=expression('r'[HL]))
 abline(a=0, b = 1,col="blue")
 cor.test(r_HL,r_EG,na.action=na.omit)
-text(x = 1,y=.3,paste("Correlation=", 
+text(x = 1,y=.3,paste("Corr=", 
                       round(cor.test(r_HL,r_EG,na.action=na.omit)$estimate,4)))
 
 # relation with the repeated measure
 plot(r_HL_1,r_EG_1,pch=16,cex=1.2,col=rgb(0,0,1,alpha = 0.05),
-     main = "Correlation between HL and EG with error",
+     main = "HL and EG with error",
      ylab=expression('r'[EG]),xlab=expression('r'[HL]))
 abline(a=0, b = 1,col="blue")
 cor.test(r_HL_1,r_EG_2,na.action=na.omit)
-text(x = -1,y=1.5,paste("Correlation=", 
+text(x = -1,y=1.5,paste("Corr=", 
                       round(cor.test(r_HL_1,r_EG_2,na.action=na.omit)$estimate,4)))
 
 dev.off()
